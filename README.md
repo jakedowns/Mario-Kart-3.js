@@ -1,3 +1,5 @@
+- adding webxr support - (jakedowns)
+
 # Mario Kart 3.js - JavaScript/WebGL Mario Kart
 [Link](https://mario-kart-3-js.vercel.app/)
 
