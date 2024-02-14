@@ -5,6 +5,7 @@ import {
   Lightformer,
   Bvh,
 } from "@react-three/drei";
+import SpectatorView from "./SpectatorView";
 import { Ground } from "./Ground";
 import { PlayerController } from "./PlayerController";
 import { Paris } from "./models/tracks/Tour_paris_promenade";

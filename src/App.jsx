@@ -5,6 +5,7 @@ import { Physics } from '@react-three/rapier'
 import { KeyboardControls, Loader, OrbitControls, Preload, Stats } from '@react-three/drei'
 import { insertCoin, onPlayerJoin } from 'playroomkit'
 import { useStore } from "./components/store";
+import { VRButton, ARButton, XR, Controllers, Hands } from '@react-three/xr'
 
 export const Controls = {
   up: 'up',
@@ -49,17 +50,21 @@ function App() {
   }
 
   useEffect(() => {
-    start();
+    setTimeout(()=>{
+      start();
+    }, 1000)
   }, [])
 
   return (
     <>
     <Loader />
+    <VRButton />
     <Canvas
       shadows
       dpr={1}
       gl={{ antialias: false, stencil: false, powerPreference: 'high-performance' }}
     >
+      <XR>
       <Suspense fallback={null}>
       <Preload all />
         <Physics
@@ -71,6 +76,7 @@ function App() {
           </KeyboardControls>
         </Physics>
       </Suspense>
+      </XR>
     </Canvas>
     </>
   )
