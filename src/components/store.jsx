@@ -13,6 +13,8 @@ export const items = [
 ]
 
 export const useStore = create((set, get) => ({
+  gameStarted: false,
+  controls: "",
   particles1: [],
   particles2: [],
   bodyPosition: [0, 0, 0],
@@ -27,6 +29,10 @@ export const useStore = create((set, get) => ({
   coins : 0,
   players : [],
   id : "",
+  joystickX: 0,
+  driftButton: false,
+  itemButton: false,
+  menuButton: false,
   addPastPosition: (position) => {
     set((state) => ({
       pastPositions: [position, ...state.pastPositions.slice(0, 499)],
@@ -139,7 +145,25 @@ export const useStore = create((set, get) => ({
     },
     setId : (id) => {
       set({id});
-    }
+    },
+    setGameStarted: (gameStarted) => {
+      set({ gameStarted });
+    },
+    setControls: (controls) => {
+      set({ controls });
+    },
+    setJoystickX: (joystickX) => {
+      set({ joystickX });
+    },
+    setDriftButton: (driftButton) => {
+      set({ driftButton });
+    },
+    setItemButton: (itemButton) => {
+      set({ itemButton });
+    },
+    setMenuButton: (menuButton) => {
+      set({ menuButton });
+    },
   },
  
 }));

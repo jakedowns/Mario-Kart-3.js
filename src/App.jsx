@@ -2,10 +2,12 @@ import { Canvas } from '@react-three/fiber'
 import { Experience } from './components/Experience'
 import { Suspense, useEffect, useMemo } from 'react'
 import { Physics } from '@react-three/rapier'
-import { KeyboardControls, Loader, OrbitControls, Preload, Stats } from '@react-three/drei'
+import { Environment, KeyboardControls, Loader, OrbitControls, Preload, Stats } from '@react-three/drei'
 import { insertCoin, onPlayerJoin } from 'playroomkit'
 import { useStore } from "./components/store";
 import { VRButton, ARButton, XR, Controllers, Hands } from '@react-three/xr'
+import * as THREE from "three";
+import { ParisBis } from './components/models/tracks/Paris-bis'
 
 export const Controls = {
   up: 'up',
@@ -15,8 +17,10 @@ export const Controls = {
   boost: 'boost',
   shoot: 'shoot',
   slow: 'slow',
-  reset: 'reset'
+  reset: 'reset',
+  escape: 'escape'
 }
+
 function App() {
   const map = useMemo(
     () => [
@@ -27,7 +31,8 @@ function App() {
       { name: Controls.jump, keys: ['Space'] },
       { name: Controls.slow, keys: ['Shift'] },
       { name: Controls.shoot, keys: ['KeyE', 'Click'] },
-      { name: Controls.reset, keys: ['KeyR'] }
+      { name: Controls.reset, keys: ['KeyR'] },
+      { name: Controls.escape, keys: ['Escape']}
     ],
     []
   )
@@ -38,13 +43,12 @@ function App() {
 
     onPlayerJoin((state) => {
       actions.addPlayer(state);
-      console.log('player joined', state);
+
       actions.setId(state.id);
-      console.log(state)
 
       state.onQuit(() => {
         actions.removePlayer(state);
-        console.log('player quit', state);
+
       });
     });
   }
@@ -60,10 +64,14 @@ function App() {
     <Loader />
     <VRButton />
     <Canvas
-      shadows
+      // shadows
       dpr={1}
-      gl={{ antialias: false, stencil: false, powerPreference: 'high-performance' }}
-    >
+      gl={{ antialias: false, stencil: false, depth:false, powerPreference: 'high-performance' }}
+      mode="concurrent"
+      onCreated={({ gl, camera }) => {
+          gl.toneMapping = THREE.AgXToneMapping
+          gl.setClearColor(0x000000, 0)
+        }}>
       <XR>
       <Suspense fallback={null}>
       <Preload all />

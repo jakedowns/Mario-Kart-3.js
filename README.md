@@ -3,9 +3,13 @@
 # Mario Kart 3.js - JavaScript/WebGL Mario Kart
 [Link](https://mario-kart-3-js.vercel.app/)
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Lunakepio/Mario-Kart-3.js)
+
 DISCLAIMER : This is not a completed project, I would say around 50% of the work has been done up to now. It takes a lot of time so please enjoy.
 
 ## How to install
+
+Fork the repository
 
 Clone the repository or download it
 
@@ -23,15 +27,15 @@ Start the dev server
 
 ## How to use (Gameplay)
 
-- Use the W key to accelerate, the mouse to steer for now (will be updated for mobile/gamepad/keyboard).
+- Use the <kbd>W</kbd> key to accelerate, the mouse to steer for now (will be updated for mobile/gamepad/keyboard).
 
 - Steer with the mouse.
 
 - Press and hold the space bar to initiate a drift. Steer and counter steer to maintain the drift. release it to get a mini - turbo.
 
-- Press E key to use the current item.
+- Press <kbd>E</kbd> key to use the current item.
 
-- Press R to reset your position, usable anytime.
+- Press <kbd>R</kbd> to reset your position, usable anytime.
 
 ## How to use (Code)
 
@@ -43,36 +47,36 @@ Start the dev server
 
 ## TO - DO
 
-- Design Landing page
+- [ ] Design Landing page
 
-- Add items
+- [ ] Add items
 
-- Add texture to the flame shaders
+- [ ] Add texture to the flame shaders
 
-- Add curve/length modifiers to drift particles 3/4
+- [ ] Add curve/length modifiers to drift particles 3/4
 
-- Add Skid marks 
+- [ ] Add Skid marks 
 
-- Add smokes
+- [x] Add smokes
 
-- Add wind screen effect when boosting
+- [ ] Add wind screen effect when boosting
 
-- Improve sound design quality
+- [ ] Improve sound design quality
 
-- Design UI for HUD
+- [ ] Design UI for HUD
 
-- Make Time Trial mode
+- [ ] Make Time Trial mode
 
-- Design tracks and checkpoints
+- [ ] Design tracks and checkpoints
 
-- Improve code quality
+- [ ] Improve code quality
 
-- Items
-  - Tennis ball
-  - Bomb
-  - Real red shell
-  - Treats
-  - ?
+- [ ] Items
+  - [ ] Tennis ball
+  - [ ] Bomb
+  - [ ] Real red shell
+  - [ ] Treats
+  - [ ] ?
 
 ## License
 

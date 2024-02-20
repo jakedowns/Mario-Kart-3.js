@@ -15,7 +15,7 @@ import { DriftParticlesRight } from "./Particles/drifts/DriftParticlesRight";
 
 import { PointParticle } from "./Particles/drifts/PointParticle";
 
-import { FlameParticles } from "./Particles/flames/FlameParticles";
+import { SmokeParticles } from "./Particles/smoke/SmokeParticles";
 import { useStore } from "./store";
 import { Cylinder } from "@react-three/drei";
 import FakeGlowMaterial from "./ShaderMaterials/FakeGlow/FakeGlowMaterial";
@@ -40,6 +40,7 @@ export const PlayerController = ({
   const jumpPressed = useKeyboardControls((state) => state[Controls.jump]);
   const shootPressed = useKeyboardControls((state) => state[Controls.shoot]);
   const resetPressed = useKeyboardControls((state) => state[Controls.reset]);
+  const escPressed = useKeyboardControls((state) => state[Controls.escape]);
 
   const [isOnGround, setIsOnGround] = useState(false);
   const body = useRef();
@@ -90,7 +91,7 @@ export const PlayerController = ({
   const effectiveBoost = useRef(0);
   const text = useRef();
 
-  const { actions, shouldSlowDown, item, bananas, coins, id } = useStore();
+  const { actions, shouldSlowDown, item, bananas, coins, id, controls } = useStore();
   const slowDownDuration = useRef(1500);
 
   useFrame(({ pointer, clock }, delta) => {
@@ -114,11 +115,21 @@ export const PlayerController = ({
       0,
       -Math.cos(kartRotation)
     );
+    
+    if (escPressed) {
+      actions.setGameStarted(false);
+    }
 
     if (leftPressed && currentSpeed > 0) {
       steeringAngle = currentSteeringSpeed;
       targetXPosition = -camMaxOffset;
     } else if (rightPressed && currentSpeed > 0) {
+      steeringAngle = -currentSteeringSpeed;
+      targetXPosition = camMaxOffset;
+    } else if (rightPressed && currentSpeed < 0) {
+      steeringAngle = currentSteeringSpeed;
+      targetXPosition = -camMaxOffset;
+    } else if (leftPressed && currentSpeed < 0) {
       steeringAngle = -currentSteeringSpeed;
       targetXPosition = camMaxOffset;
     } else {
@@ -182,13 +193,24 @@ export const PlayerController = ({
     }
 
     // REVERSING
-    if (downPressed && currentSpeed < -maxSpeed) {
+    if (downPressed) {
+      if (currentSteeringSpeed < MaxSteeringSpeed) {
+        setCurrentSteeringSpeed(
+          Math.min(
+            currentSteeringSpeed + 0.0001 * delta * 144,
+            MaxSteeringSpeed
+          )
+        );
+      }
+    }
+
+    if (downPressed && currentSpeed <= 0) {
       setCurrentSpeed(
         Math.max(currentSpeed - acceleration * delta * 144, -maxSpeed)
       );
     }
     // DECELERATING
-    else if (!upPressed && !downPressed) {
+    else if (!upPressed) {
       if (currentSteeringSpeed > 0) {
         setCurrentSteeringSpeed(
           Math.max(currentSteeringSpeed - 0.00005 * delta * 144, 0)
@@ -251,6 +273,7 @@ export const PlayerController = ({
     if (
       jumpIsHeld.current &&
       currentSteeringSpeed > 0 &&
+      upPressed &&
       pointer.x < -0.1 &&
       !driftRight.current
     ) {
@@ -259,6 +282,7 @@ export const PlayerController = ({
     if (
       jumpIsHeld.current &&
       currentSteeringSpeed > 0 &&
+      upPressed &&
       pointer.x > 0.1 &&
       !driftLeft.current
     ) {
@@ -547,6 +571,7 @@ export const PlayerController = ({
           {/* <FlameParticles isBoosting={isBoosting} /> */}
           <DriftParticlesLeft turboColor={turboColor} scale={scale} />
           <DriftParticlesRight turboColor={turboColor} scale={scale} />
+          <SmokeParticles driftRight={driftRight.current} driftLeft={driftLeft.current} />
           <PointParticle
             position={[-0.6, 0.05, 0.5]}
             png="./particles/circle.png"
@@ -576,6 +601,7 @@ export const PlayerController = ({
           position={[0, 2, 8]}
           fov={50}
           ref={cam}
+          far={5000}
         />
         <PositionalAudio
           ref={engineSound}

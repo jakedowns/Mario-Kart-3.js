@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useStore } from "./components/store";
+import { Joystick } from "react-joystick-component";
 
 export const HUD = () => {
   const wheel = useRef();
   const [image, setImage] = useState("");
-  const {item} = useStore();
+  const { item, gameStarted, actions, controls } = useStore();
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -26,6 +27,14 @@ export const HUD = () => {
     };
   }, []);
 
+  const handleMove = (e) => {
+    actions.setJoystickX(e.x);
+  };
+
+  const handleStop = () => {
+    actions.setJoystickX(0);
+  };
+
   useEffect(() => {
     switch (item) {
       case "banana":
@@ -44,31 +53,92 @@ export const HUD = () => {
 
   return (
     <div className="overlay">
-      <div className="logo">
-        <img src="./logo.png" alt="logo" />
-      </div>
-      <div className="item">
-        <div className="borderOut">
-          <div className="borderIn">
-            <div className="background">
-              {image && <img src={image} alt="item" width={90} />}
+      {gameStarted && (
+        <>
+          <div className="item">
+            <div className="borderOut">
+              <div className="borderIn">
+                <div className="background">
+                  {image && <img src={image} alt="item" width={90} />}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="wheel">
-        <img
-          ref={wheel}
-          src="./steering_wheel.png"
-          alt="steering wheel"
-          className="steering-wheel"
-          style={{
-            position: "absolute",
-            pointerEvents: "none",
-            transformOrigin: "center",
-          }}
-        />
-      </div>
+          {controls === "touch" && (
+            <>
+            <div className="controls joystick">
+            <Joystick
+              size={100}
+              sticky={false}
+              baseColor="rgba(255, 255, 255, 0.5)"
+              stickColor="rgba(255, 255, 255, 0.5)"
+              move={handleMove}
+              stop={handleStop}
+            ></Joystick>
+          </div>
+          <div
+            className="controls drift"
+            onMouseDown={(e) => {
+              actions.setDriftButton(true);
+            }}
+            onMouseUp={(e) => {
+              actions.setDriftButton(false);
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              actions.setDriftButton(true);
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              actions.setDriftButton(false);
+            }}
+          >
+            drift
+          </div>
+          <div
+            className="controls itemButton"
+            onMouseDown={(e) => {
+              actions.setItemButton(true);
+            }}
+            onMouseUp={(e) => {
+              actions.setItemButton(false);
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              actions.setItemButton(true);
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              actions.setItemButton(false);
+            }}
+
+          >
+            item
+          </div>
+          <div
+            className="controls menuButton"
+            onMouseDown={(e) => {
+              actions.setMenuButton(true);
+            }}
+            onMouseUp={(e) => {
+              actions.setMenuButton(false);
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              actions.setMenuButton(true);
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              actions.setMenuButton(false);
+            }}
+
+          >
+            menu
+          </div>
+          </>
+          )}
+        </>
+      )}
     </div>
   );
 };
