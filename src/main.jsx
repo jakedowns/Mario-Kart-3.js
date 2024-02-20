@@ -6,7 +6,8 @@ import { HUD } from './HUD'
 import { Landing } from './Landing'
 import { useStore } from './components/store'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+let root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
   <React.StrictMode>
     <App />
     <HUD />

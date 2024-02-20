@@ -5,6 +5,7 @@ import { Physics } from '@react-three/rapier'
 import { Environment, KeyboardControls, Loader, OrbitControls, Preload, Stats } from '@react-three/drei'
 import { insertCoin, onPlayerJoin } from 'playroomkit'
 import { useStore } from "./components/store";
+import { VRButton, ARButton, XR, Controllers, Hands } from '@react-three/xr'
 import * as THREE from "three";
 import { ParisBis } from './components/models/tracks/Paris-bis'
 
@@ -53,12 +54,15 @@ function App() {
   }
 
   useEffect(() => {
-    start();
+    setTimeout(()=>{
+      start();
+    }, 1000)
   }, [])
 
   return (
     <>
     <Loader />
+    <VRButton />
     <Canvas
       // shadows
       dpr={1}
@@ -68,6 +72,7 @@ function App() {
           gl.toneMapping = THREE.AgXToneMapping
           gl.setClearColor(0x000000, 0)
         }}>
+      <XR>
       <Suspense fallback={null}>
       <Preload all />
         <Physics
@@ -79,6 +84,7 @@ function App() {
           </KeyboardControls>
         </Physics>
       </Suspense>
+      </XR>
     </Canvas>
     </>
   )

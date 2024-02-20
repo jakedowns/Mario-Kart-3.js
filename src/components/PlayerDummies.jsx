@@ -106,7 +106,6 @@ export const PlayerDummies = ( { player, userPlayer }) => {
 
 
 
-
   if(bodyPosition && bodyRotation && kart.current && mario.current){
     kart.current.position.set(bodyPosition.x, bodyPosition.y -.5, bodyPosition.z);
     kart.current.rotation.set(0, bodyRotation, 0);
